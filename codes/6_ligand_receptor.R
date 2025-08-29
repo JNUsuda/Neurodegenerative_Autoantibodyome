@@ -5,6 +5,7 @@
 source("./codes/my_packages.R")
 source("./codes/my_functions.R")
 
+# install packages from github:
 #devtools::install_github("jinworks/CellChat")
 #devtools::install_github("jokergoo/circlize")
 library("CellChat")
@@ -194,6 +195,19 @@ for (group in c("AD","MCI", "PD", "earlyPD", "MS", "spMS", "rrMS")) {
                   facing = "clockwise", 
                   niceFacing = TRUE, adj = c(-0, 0.5))}
   }, bg.border = NA)
+  
+  # add legend
+  tab_allu5 = tab_allu4 %>% ungroup() %>% 
+    distinct(pathway_name, .keep_all = T) %>% 
+    dplyr::arrange(pathway_name)
+  lgd_points = Legend(at = as.character(unique(tab_allu5$pathway_name)), 
+                      type = "grid", #squares
+                      legend_gp = gpar(fill = tab_allu5$cores),
+                      title_position = "topleft", 
+                      gap = unit(0.3, "cm"),  
+                      title = "Pathway")
+  
+  draw(lgd_points, x = unit(1, "cm"), y = unit(1, "cm"), just = c("left", "bottom"))
   
   dev.off()
 }
