@@ -145,7 +145,7 @@ ggplot(tab_cluster_N3) +
 ggsave(filename = "../../figures/dotplots/SynGO.svg", width = 2600, 
        height = 2300, units = "px", dpi = 300, device = "svg", scale = 1)
 
-## 5.2 Barplot synapse DRAs and terms ------------------------------------------
+## 5.3 Barplot synapse DRAs and terms ------------------------------------------
 
 tab_net = read.delim(file = "./DRAs_ALL_GSEbatch.tsv", header = T, 
                      na.strings = c("", "NA"))
@@ -228,7 +228,7 @@ ggplot(bars3, aes(fill=System_syngo, y=n, x=System_syngo)) +
 ggsave(filename = "../../figures/barplot/barplot_Syngo.svg", width = 1000, 
        height = 1500, units = "px", dpi = 300, device = "svg", scale = 1)
 
-## 5.3 Network synapse DRAs and terms ------------------------------------------
+## 5.4 Network synapse DRAs and terms ------------------------------------------
 
 tab_cluster_N = enrichrdf
 

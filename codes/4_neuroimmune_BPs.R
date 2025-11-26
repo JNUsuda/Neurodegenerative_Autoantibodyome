@@ -249,7 +249,7 @@ ggplot(top_tab_cluster_N) +
 ggsave(filename = "../../figures/heatmap/hm_I_BPs.png", width = 2000, 
        height = 1300, units = "px", dpi = 300, device = "png", scale = 1)
 
-## 4.4 Network neuroimmune BPs -------------------------------------------------
+## 4.5 Network neuroimmune BPs -------------------------------------------------
 
 tab_net = read.delim(file = "./DRAs_ALL_GSEbatch.tsv", header = T, 
                      na.strings = c("", "NA"))

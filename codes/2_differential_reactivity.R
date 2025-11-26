@@ -107,46 +107,6 @@ degs_all_nome = paste0("./DRAs_ALL_", title, ".tsv")
 write.table(df3, file = degs_all_nome, sep = "\t", 
             row.names = F, col.names = T, na = "")
 
-
-# 
-# 
-# sequ = seq(from = 1, to = length(upper_res_list), by = 3)
-# names(upper_res_list)[sequ]
-# 
-# sets = which(names(upper_res_list)[sequ] %in% c("AD_TOTAL", "MCI_TOTAL")) 
-# sets = which(names(upper_res_list)[sequ] %in% c( "earlyPD_TOTAL", "PD_TOTAL")) 
-# sets = which(names(upper_res_list)[sequ] %in% c("rrMS_TOTAL", "spMS_TOTAL", "MS_TOTAL")) 
-# 
-# names(upper_res_list)[sets*3-2]
-# total_sets = sets*3-2
-# 
-# group_total = c()
-# group_up = c()
-# group_down = c()
-# 
-# for (i in total_sets) {
-#   group_total = c(group_total, upper_res_list[[i]])
-#   group_total = unique(group_total)
-#   
-#   group_up = c(group_up, upper_res_list[[i+1]])
-#   group_up = unique(group_up)
-#   
-#   group_down = c(group_down, upper_res_list[[i+2]])
-#   group_down = unique(group_down)
-# }
-# 
-# #joined_list = list()
-# 
-# condicao = "MS-group"
-# joined_list[[paste0(condicao,"_TOTAL")]] = group_total
-# joined_list[[paste0(condicao,"_UP")]] = group_up
-# joined_list[[paste0(condicao,"_DOWN")]] = group_down
-# 
-# joined_table = l2df(joined_list, byrow = F)
-# # write.table(joined_table, row.names = F, col.names = T, sep = "\t",
-# #             file = "./joined_GSEbatch.tsv", na = "")
-# 
-
 ## 2.3 Diverging bars ----------------------------------------------------------
 
 tab_net = read.delim(file = "./DRAs_ALL_GSEbatch.tsv", header = T, na.strings = c("", "NA"))
