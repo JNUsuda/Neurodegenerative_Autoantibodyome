@@ -6,10 +6,9 @@ suppressMessages({
   load_lib <- c("tidyverse", "highcharter", "BiocManager", "forcats", "stringr",
                 "ggrepel", "readr", "survminer", "pheatmap", "readxl", "svglite", 
                 "ggridges", "ggvenn",  "corrplot", "factoextra", "berryFunctions", 
-                "network", "GGally", "scales", "sna", "RColorBrewer", #"ggnet", 
-                "ggpattern",
+                "network", "GGally", "scales", "sna", "RColorBrewer", "ggpattern",
                 "GEOquery", "limma",  "sva","DOSE","clusterProfiler", #bioconductor
-                 "rrvgo", "org.Hs.eg.db", "ComplexHeatmap" ) #bioconductor
+                 "rrvgo", "org.Hs.eg.db", "ComplexHeatmap", "GOSemSim" ) #bioconductor
 
   install_lib <- load_lib[!(load_lib %in% installed.packages())] # check package
   if (length(install_lib)) for (i in install_lib) install.packages(i) # install

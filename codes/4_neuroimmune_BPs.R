@@ -193,7 +193,7 @@ ggplot(bars, aes(fill=System, y=n, x=System)) +
 ggsave(filename = "../../../figures/barplot/barplot_NI_BPs.svg", width = 1200,
        height = 1600, units = "px", dpi = 300, device = "svg", scale = 1)
 
-## 4.4 Heatmaps top neuroimmune BPs --------------------------------------------
+## 4.4 Dotplots top neuroimmune BPs --------------------------------------------
 
 # select immune BPs
 tab_cluster_N = tab_cluster2 %>% subset(ID %in% immune_BPs)
@@ -246,7 +246,7 @@ ggplot(top_tab_cluster_N) +
                                 "#ff8531","#ffd331","#ffa600"))
 
 # save file (!!!)
-ggsave(filename = "../../figures/heatmap/hm_I_BPs.png", width = 2000, 
+ggsave(filename = "../../figures/dotplot/hm_I_BPs.png", width = 2000, 
        height = 1300, units = "px", dpi = 300, device = "png", scale = 1)
 
 ## 4.5 Network neuroimmune BPs -------------------------------------------------
@@ -452,3 +452,51 @@ ggnet2(net,
 ggsave(filename = "../../figures/network/Network_NI_BPs.svg",
        device = "svg", width = 11, height = 9, units = "in")  
 
+## 4.5 Semantic Similarity -----------------------------------------------------
+
+#BiocManager::install("GOSemSim")
+#library(GOSemSim)
+
+# repeat for tab_net_001, with enrichment results for adj. p-val<0.01 DRAs
+# and tab_net_005, with enrichment results for adj. p-val<0.05 DRAs
+# to compare both enrichment results
+
+{tab_net_005 = read.delim(file = "./clusterprofiler_enrichment-res.txt", 
+                         header = T, na.strings = c("", "NA"))
+
+# BP classification by system
+tab_net_005 = tab_net_005 %>% subset(ID %in% unique(c(neuro_BPs, immune_BPs))) #uberon terms
+tab_net_005 = tab_net_005 %>% mutate(Term_immune = if_else(ID %in% immune_BPs, T, F))
+tab_net_005 = tab_net_005 %>% mutate(Term_neuro = if_else(ID %in% neuro_BPs, T, F))
+tab_net_005 = tab_net_005 %>% 
+  mutate(Term_System = 
+           if_else(Term_immune == T & Term_neuro == F, "immune_BP", 
+           if_else(Term_immune == F & Term_neuro == T, "neuro_BP", 
+           if_else(Term_immune == T & Term_neuro == T, "neuroimmune_BP", "other_BP"))))
+tab_net_005 =  subset(tab_net_005, Term_System != "other_BP")
+}
+
+# semantic similarity analysis
+
+# load GO data
+hsGO <- godata(annoDb = 'org.Hs.eg.db', ont="BP")
+
+# semantic similarity for all results
+mgoSim(unique(tab_net_005$ID), unique(tab_net_001$ID), semData=hsGO, 
+       measure="Wang", combine="rcmax")
+
+# semantic similarity by subgroup
+for (item in c("AD","MCI", "PD", "earlyPD", "MS", "spMS", "rrMS")) {
+  print(item)
+  tab_net_005_sub = tab_net_005 %>% dplyr::filter(disease == item)
+  tab_net_001_sub = tab_net_001 %>% dplyr::filter(disease == item)
+  print(mgoSim(tab_net_005_sub$ID, tab_net_001_sub$ID, semData=hsGO, 
+               measure="Wang", combine="rcmax"))
+}
+
+# similarity matrix
+mat = termSim(tab_net_005$ID, tab_net_001$ID, semData=hsGO, method = "Wang")
+
+# save similarity  matrix (!!!)
+write.table(mat, file = "./GOsimilaritymatrix_005_001.txt", sep = "\t", 
+            col.names = T, row.names = T)
